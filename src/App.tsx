@@ -9,7 +9,7 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    SelectChangeEvent,
+    SelectChangeEvent, Typography,
 } from "@mui/material";
 
 
@@ -101,6 +101,7 @@ function App() {
     return (
         <Container>
 
+            <Box sx={{pt:5}}><Typography variant={"h2"}>Dog.ceo </Typography></Box>
             <Box component={"form"} onSubmit={showImages} sx={{display: "flex", pt: 5, gap: 2, alignItems: "center"}}>
                 <Box sx={{flex: 1}}>
                     <FormControl fullWidth sx={{"& fieldset": {borderColor: errors.breed ? 'red' : 'inherit'}}}>
