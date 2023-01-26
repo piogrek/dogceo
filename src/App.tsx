@@ -11,7 +11,6 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import axios from "axios";
 
 
 type ApiResponse = {
@@ -42,13 +41,22 @@ function App() {
 
     //load on start
     useEffect(() => {
-        axios.get(
+        fetch(
             `https://dog.ceo/api/breeds/list/all`
-        ).then(({data}) => {
+        ).then(r => r.json()).then((data: ApiResponse) => {
             setBreeds(Object.keys(data.message))
         })
 
     }, [])
+
+    const loadSubBreeds = () => {
+        if (!breed) {
+            return
+        }
+        fetch(`https://dog.ceo/api/breed/${breed}/list`).then(r => r.json()).then((data: ApiResponse) => {
+            setCurrentSubBreeds(data.message[breed])
+        })
+    };
 
     // loads subbreeds any time breed changes
     useEffect(() => {
@@ -63,14 +71,6 @@ function App() {
     }, [subBreed])
 
 
-    function loadSubBreeds() {
-        if (!breed) {
-            return
-        }
-        axios.get(`https://dog.ceo/api/breed/${breed}/list`).then(({data}) => {
-            setCurrentSubBreeds(data.message[breed])
-        })
-    }
 
 
     const showImages: FormEventHandler = (event) => {
@@ -92,7 +92,7 @@ function App() {
         if (subBreed) {
             url = `https://dog.ceo/api/breed/${breed}/${subBreed}/images/random/${noImages}`
         }
-        axios.get(url).then(({data}) => {
+        fetch(url).then(r => r.json()).then((data: ApiResponse) => {
             setImages(data.message)
         })
 
